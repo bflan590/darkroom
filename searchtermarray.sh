@@ -5,15 +5,15 @@
 #"Date/Time Original"
 #"File Inode Change Date/Time"
 
-declare -a searchterms=("$2" "$3")
+declare -a searchterms=("Date/Time Original" "File Inode Change Date/Time")
 
 for i in "${searchterms[@]}"
 do
-	exifdata=$(exiftool $1 | grep "$i" | head -1 ) #There are 2 matches for Date/Time so this just grabs the first one
-		if [ "$exifdata" != "" ]
-		then
-			break
-		fi
+	exifdata=$(exiftool $1 | grep "$i" | head -1 ) 
+	if [ "$exifdata" != "" ]
+	then
+		break
+	fi
 done
 
 echo "$exifdata"

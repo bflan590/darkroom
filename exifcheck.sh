@@ -2,19 +2,8 @@
 #Argument = image file being renamed 
 #This script assumes that the File Inode Change Date/Time is an 18 character numberical string when dashes/colons are removed
 #Exif data is scraped and separated into individual variables. awk isolates the 5th row of the 2nd column and sed removes the colons and spaces.
-search1="Date/Time Original"
-search2="File Inode Change Date/Time"
 
-exifdata=$(exiftool $1 | grep "$search1")
-#Loop logic that checks for search terms. First if statement checks for presence of data off of "Date/Time Original"
-if [ -z "$exifdata" ]; then
-	exifdata=$(exiftool $1 | grep "$search2")
-	exifdata=$(echo "$exifdata" | head -1 | awk -F " : " '{print $2}' | sed -e 'y/:-/  /' -e 's/ //g')
-else	
-	exifdata=$(echo "$exifdata" | head -1 | awk -F " : " '{print $2}' | sed -e 'y/:-/  /' -e 's/ //g')
-fi
-echo "Full string is " $exifdata 
-
+exifdata=$1
 
 year=$(echo $exifdata | sed 's/^.\{0\}\(.*\).\{14\}$/\1/')
 month=$(echo $exifdata | sed 's/^.\{4\}\(.*\).\{12\}$/\1/')
